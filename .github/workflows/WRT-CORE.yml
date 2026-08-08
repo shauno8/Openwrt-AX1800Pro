@@ -107,7 +107,7 @@ jobs:
           echo "WRT_INFO=${WRT_SOURCE%%/*}" >> $GITHUB_ENV
           echo "WRT_TARGET=$(grep -m 1 -oP '^CONFIG_TARGET_\K[\w]+(?=\=y)' ./Config/$WRT_CONFIG.txt)" >> $GITHUB_ENV
           echo "WRT_WIFI=wifi-yes" >> $GITHUB_ENV
-          echo "WRT_EXTRA_CONFIG=$([[ -f ./Config/GENERAL_AX6600_${WRT_PROFILE_UPPER}.txt ]] && echo ./Config/GENERAL_AX6600_${WRT_PROFILE_UPPER}.txt || true)" >> $GITHUB_ENV
+          echo "WRT_EXTRA_CONFIG=$([[ -f ./Config/GENERAL_AX1800Pro_${WRT_PROFILE_UPPER}.txt ]] && echo ./Config/GENERAL_AX1800Pro_${WRT_PROFILE_UPPER}.txt || true)" >> $GITHUB_ENV
           echo "WRT_KVER=none" >> $GITHUB_ENV
           echo "WRT_LIST=none" >> $GITHUB_ENV
 
@@ -207,7 +207,7 @@ jobs:
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt >> .config
           else
             #cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
-            cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL_AX6600.txt ${WRT_EXTRA_CONFIG:+$GITHUB_WORKSPACE/${WRT_EXTRA_CONFIG#./}} >> .config
+            cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL_AX1800Pro.txt ${WRT_EXTRA_CONFIG:+$GITHUB_WORKSPACE/${WRT_EXTRA_CONFIG#./}} >> .config
           fi
 
           $GITHUB_WORKSPACE/Scripts/Settings.sh
@@ -293,7 +293,7 @@ jobs:
           tag_name: ${{ env.WRT_CONFIG }}-${{ env.WRT_PROFILE }}-${{ env.WRT_INFO }}-${{ env.WRT_BRANCH }}-${{ env.WRT_DATE }}
           files: ./wrt/upload/*.*
           body: |
-            📦 OpenWrt 自动编译固件（AX6600 / IPQ6010）
+            📦 OpenWrt 自动编译固件（AX1800 Pro / IPQ6000）
             ━━━━━━━━━━━━━━━━━━━━━━━
 
             📌 基本信息
@@ -331,10 +331,9 @@ jobs:
             WiFi 密码：${{ env.WRT_WORD }}
             ━━━━━━━━━━━━━━━━━━━━━━━
 
-            📶 WiFi 推荐设置（雅典娜三频三 WiFi）
+            📶 WiFi 推荐设置（亚瑟双频）
             - 2.4G（2×2）：信道 11，带宽 20MHz
-            - 5G-1 游戏频段（4×4）：信道 44，带宽 160MHz（无法开启或断流则回退 80MHz）
-            - 5G-2 影音频段（2×2）：信道 149，带宽 80MHz
+            - 5G（2×2）：信道 149，带宽 80MHz（非 DFS 无雷达断流）
             - 通用：地区 US，发射功率 24 dBm，加密 WPA2-PSK（CCMP 算法）
             ━━━━━━━━━━━━━━━━━━━━━━━
             📥 下载与刷机说明
